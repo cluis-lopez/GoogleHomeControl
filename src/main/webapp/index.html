@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Google Home Controller App</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Small Home Controller App.">
+	<meta name="author" content="Carlos L. Lopez">
+	<link rel="manifest" href="manifest.json">
+	<link rel="apple-touch-icon" sizes="120x120" href="icons/icons-120.png">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+  	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+ 	<meta name="apple-mobile-web-app-title" content="Home Control">
+	<link rel="stylesheet" type="text/css" href="css/gindex.css">
+	<link rel="stylesheet" type="text/css" href="icons/css/fontello.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://js.pusher.com/4.1/pusher.min.js"></script>
+	<script type="text/javascript" src="js/diagrams.js"></script>
+	<script type="text/javascript" src="js/gmain.js"></script>
+	<script type="text/javascript" src="js/gindex.js"></script>
+</head>
+<body>
+<!-- Top Navigation Menu -->
+<div class="topnav">
+  <p id="logo"><img src="icons/Logo.png" width="250"></p>
+  <p id="username">User: </p>
+  <!-- Navigation links (hidden by default) -->
+  <div id="myLinks">
+    <p class="menu" id="monitor_menu">Monitor</p>
+    <p class="menu" id="control_menu">Control</p>
+    <p class="menu" id="program_menu">Programar</p>
+    <p class="menu" id="historic_menu">Historico</p>
+    <p class="menu" id="about_menu">About</p>
+  </div>
+  <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+  <a href="javascript:void(0);" id="iconMenu">
+    <i class="icon icon-menu"></i>
+  </a>
+</div>
+<div id="refrescando">
+	<img src="icons/Loading.gif">
+</div>
+<div class="main" id="monitor">
+		<div class="boxInMain">
+			<table id="monitorTable">
+				<tr>
+					<td>Modo</td>
+					<td class="columna2" id="modeOp"></td>
+				</tr>
+				<tr>
+					<td>Temperatura Actual</td>
+					<td class="columna2" id="currentTemp"></td>
+				</tr>
+				<tr>
+					<td>Humedad</td>
+					<td class="columna2" id="currentHum"></td>
+				</tr>
+				<tr>
+					<td>Temperatura Objetivo</td>
+					<td class="columna2" id="tempTarget"></td>
+				</tr>
+				<tr>
+					<td>Caldera</td>
+					<td class="columna2" id="estado"></td>
+				</tr>
+			</table>
+		</div>
+	<div class="scrolling">
+			<div class="card" id="cont1">
+				<canvas id="chart"></canvas>
+			</div>
+	</div>
+</div>
+<div class="main" id="control">
+	<div id="control_box">
+	<table style="width: 100%;">
+	<tr>
+		<td>Modo</td><td style="text-align: right;"><select id="modeOp_select"><option>OFF</option><option>MANUAL</option><option>PROGRAMA</option></select></td>
+	</tr>
+	</table>
+	</div>
+	<div id="control_box">
+	<table style="width: 100%;">
+	<tr>
+		<td>Temperatura</td><td style="text-align: right;"><select id="tempTarget_select"></select></td>
+	</tr>
+	<tr><td colspan="2" style="text-align: center; font-size: 15px; font-weight: normal;padding-top:20px;">Temperatura Objetivo actual <span id="tempTarget2"></span></td></tr>
+	</table>
+	</div>
+	<div id="control_divbutton">
+		<button id="control_button">Activar</button>
+	</div>
+</div>
+<div class="main" id="program">
+	<div class="program_box">
+		<table style="width: 100%;">
+			<tr>
+				<td>D&iacute;a de la semana</td><td style="text-align: right;"><select id="diaPrograma"></select></td>
+			</tr>
+		</table>
+	</div>
+	<div class="card" id="cont2">
+		<canvas id="programa"></canvas>
+	</div>
+	<div class="program_box">
+			<table style="width: 100%;">
+			<tr style="padding-bottom: 15px;">
+				<td>Copiar programa del </td><td style="text-align: right;"><select id="diaCopia"></select></td>
+				<td><button class="table_button" id="copiar">OK</button></td>
+			</tr>
+			</table>
+	</div>
+	<div class="program_box">
+			<table style="width: 100%;">
+			<tr>
+				<td>Hora Inicio</td><td style="text-align: right;"><select id="horaInicio"></select></td>
+			</tr>
+			<tr>
+				<td>Hora Final</td><td style="text-align: right;"><select id="horaFinal"></select></td>
+				<td><button class="table_button" id="rango">OK</button></td>
+			</tr>
+			<tr>
+				<td>Temperatura en el rango</td><td style="text-align: right;"><select id="tempPrograma"></select></td>
+			</tr>
+		</table>
+	</div>
+		<div id="control_divbutton">
+		<button id="program_button">Programar</button>
+	</div>
+</div>
+<div class="main" id="historic">
+</div>
+<div class="main" id="about">
+	<div class="insideabout"><img src="icons/foto.jpg"><p>&copy; Carlos L. L&oacute;pez 2018</p></div>
+	<div class="insideabout"><a href="https://github.com/cluis-lopez/HomeControl"><i style="color: black;"class="icon icon-github"></i><p>Get the code</p></a></div>
+	<dic class="insideabout"><a href="https://www.linkedin.com/in/carlos-lopez-25977223/"><i class="icon icon-linkedin-rect"></i><p>Denme un curro payos</p></a>
+</div>
+<div id="modallogin" class="modaltop">
+	<div id="logincontent" class="modaldown">
+		<form id="loginform">
+				<label for="mail">Mail</label>
+				<input type="text" id="user" name="user">
+				<label for="password">Password</label>
+				<input type="password" id="password" name="password">
+				<input type="button" id="loginbutton" value="Enviar">
+		</form>
+	</div>
+</div>
+</body>
+</html>
