@@ -4,8 +4,7 @@ function main(u, t) {
 	var token = t;
 	var ipadd;
 	const mapaModes = {"OFF":0, "MANUAL":1, "PROGRAMA":2};
-	const dias = {0:"Domingo", 1:"Lunes", 2:"Martes", 3:"Miercoles", 4:"Jueves", 5:"Viernes", 6:"Sabado"};
-	var swHora = 0;
+	const dias = {0:"Lunes", 1:"Martes", 2:"Miercoles", 3:"Jueves", 4:"Viernes", 5:"Sabado", 6:"Domingo"};
 	let calendario;
 
 	for (var i = 30; i >= 10; i--){
@@ -201,6 +200,15 @@ function main(u, t) {
 			 },
 			 timeout: 15000
 		 });
+	 });
+	 
+	 $("#historic_menu").click(function(){
+		 $("#myLinks").css("display", "none");
+		 $("#monitor").css("display","none");
+		 $("#control").css("display", "none");
+		 $("#program").css("display","none");
+		 $("#historic").css("display","block");
+		 $("#about").css("display","none");
 	 });
 	 
 	 $("#about_menu").click(function(){

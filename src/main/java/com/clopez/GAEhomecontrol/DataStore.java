@@ -96,7 +96,7 @@ public class DataStore {
 				} else { //No hay token o ha expirado.Therefore, generamos uno nuevo
 					UUID uuid = UUID.randomUUID();
 					long t = d.getTime();
-					t = t + 24 * 60 * 60 * 1000; // Tiempo de validez del token: 1 día
+					t = t + 7 * 24 * 60 * 60 * 1000; // Tiempo de validez del token: 7 días
 					Date valid = new Date(t);
 					ret[1] = uuid.toString();
 					e.setProperty("Token", uuid.toString());
