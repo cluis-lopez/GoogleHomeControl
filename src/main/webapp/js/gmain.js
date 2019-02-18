@@ -4,7 +4,7 @@ function main(u, t) {
 	var token = t;
 	var ipadd;
 	const mapaModes = {"OFF":0, "MANUAL":1, "PROGRAMA":2};
-	const dias = {0:"Lunes", 1:"Martes", 2:"Miercoles", 3:"Jueves", 4:"Viernes", 5:"Sabado", 6:"Domingo"};
+	const dias = {0:"Domingo", 1:"Lunes", 2:"Martes", 3:"Miercoles", 4:"Jueves", 5:"Viernes", 6:"Sabado"};
 	let calendario;
 
 	for (var i = 30; i >= 10; i--){
@@ -19,11 +19,14 @@ function main(u, t) {
 	
 	for (var i=0; i<7; i++){
 		var dia = new Date().getDay();
-		$("#diaCopia").append("<option selected>"+dias[i]+"</option>");
 		if ( i == dia)
 			$("#diaPrograma").append("<option selected>"+dias[i]+"</option>");
 		else
 			$("#diaPrograma").append("<option>"+dias[i]+"</option>");
+	}
+	
+	for (var i in Programas){
+		$("#programas").append("<option>"+Programas[i][0]+"</option>");
 	}
 	
 	for (var i=0; i<24; i++){
@@ -122,21 +125,29 @@ function main(u, t) {
 		 $("#program").css("display","block");
 		 $("#historic").css("display","none");
 		 $("#about").css("display","none");
+		 let dia = new Date().getDay();
+		 $("#diaPrograma").val(dias[dia]);
 	 });
 	 
 	 $("#diaPrograma").change(function(){
 		 pintaProgramaDia(calendario, $("#programa")[0], getKeyByValue(dias, $(this).val()));
 	 });
 	 
+	 function findIndice(p){
+		 for (let i = 0; i < Programas.length; i++)
+			 if (Programas[i][0] == p)
+			 	return i;
+	 }
 	 //Los botones para ajustar el programa
 	 $("#copiar").click(function(){
-		 let origen = getKeyByValue(dias, $("#diaCopia").val());
-		 let destino = getKeyByValue(dias, $("#diaPrograma").val());
-		 for (let i = 0; i<24; i++){
-			 calendario.dias[destino][i][0] = calendario.dias[origen][i][0];
-			 calendario.dias[destino][i][1] = calendario.dias[origen][i][1];
+		 let index = findIndice($("#programas").val());
+		 for (let i = 0; i<7; i++) {
+			 for (let j = 0; j<24; j++) {
+				 calendario.dias[i][j][0] = Programas[index][1][i][j][0];
+				 calendario.dias[i][j][1] = Programas[index][1][i][j][1];
+			 }
 		 }
-		 pintaProgramaDia(calendario, $("#programa")[0], destino);
+		 pintaProgramaDia(calendario, $("#programa")[0], getKeyByValue(dias, $("#diaPrograma").val()));
 	 });
 	 
 	 $("#rango").click(function(){
@@ -288,7 +299,7 @@ function main(u, t) {
 				if (data == "OK"){
 					$("#refrescando").css("display", "none");
 					$("#control_button").css("background-color","lightskyblue");
-					$("#control_button").text("Activar")
+					$("#control_button").text("Activar Programa")
 					$("#control_button").prop("disabled", false);
 				} else {
 					$("#refrescando").css("display", "none");
@@ -301,7 +312,7 @@ function main(u, t) {
 		    error: function (xhr, ajaxOptions, thrownError) {
 		    	$("#refrescando").css("display", "none");
 		    	$("#control_button").css("background-color","lightskyblue");
-				$("#control_button").text("Activar")
+				$("#control_button").text("Activar Programa")
 				$("#control_button").prop("disabled", false);
 		        alert("Ha habido un problema al comunicarse con la app Google\n\n" + thrownError);
 		    },
