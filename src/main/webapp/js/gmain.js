@@ -64,6 +64,30 @@ function main(u, t) {
 		refresca(x);
 	});
 	
+	// Mount the Hammer events for swipe
+	
+	var hammerMenu = new Hammer(document.getElementById('cabecera'));
+	hammerMenu.get('swipe').set({direction: Hammer.DIRECTION_ALL, threshold: 1, velocity:0.1});
+	hammerMenu.on('swipedown swipeup', function(ev) {
+		$("#iconMenu").click();
+	});
+	
+	var hammerCanvas = new Hammer(document.getElementById('cont2'));
+	hammerCanvas.get('swipe').set({direction: Hammer.DIRECTION_ALL, threshold: 1, velocity:0.1});
+	hammerCanvas.on('swipeleft', function(ev) {
+		var dia = parseInt(getKeyByValue(dias, $("#diaPrograma").val())) + 1;
+		if (dia == 7)
+			dia = 0;
+		$("#diaPrograma").val(dias[dia]);
+		$("#diaPrograma").change();
+	});
+	hammerCanvas.on('swiperight', function(ev) {
+		var dia = parseInt(getKeyByValue(dias, $("#diaPrograma").val())) - 1;
+		if (dia == -1)
+			dia = 6;
+		$("#diaPrograma").val(dias[dia]);
+		$("#diaPrograma").change();
+	});
 	
 	$("#iconMenu").click(function toggleMenu(){
 		if ($("#myLinks").css("display") == "block")
